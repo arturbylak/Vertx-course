@@ -15,7 +15,7 @@ public class Receiver extends Verticle {
     }
 
     private void handle(final Message<String> message) {
-        System.out.println(message.body());
+        System.out.println("Receiver > " +message.body());
 
         message.reply("This is a reply");
     }
