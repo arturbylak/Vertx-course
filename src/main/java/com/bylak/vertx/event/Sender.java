@@ -15,6 +15,10 @@ public class Sender extends Verticle {
 
         eventBus.send("test.address", "Message published", (Message<String> response) ->
                 System.out.println("Sender > " + response.body()));
+        eventBus.send("test.address", "Message published 2", (Message<String> response) ->
+                System.out.println("Sender > " + response.body()));
+        eventBus.send("test.address", "Message published 3", (Message<String> response) ->
+                System.out.println("Sender > " + response.body()));
 
         System.out.println("Sender > After send");
     }
