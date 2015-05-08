@@ -15,11 +15,13 @@ public class Server extends Verticle {
     public void start(final Future<Void> startedResult) {
         HttpServer server = vertx.createHttpServer();
         RouteMatcher routeMatcher = new RouteMatcher();
-        
-        routeMatcher.get("/page", new Handler<HttpServerRequest>() {
+
+        routeMatcher.get("/page/:id", new Handler<HttpServerRequest>() {
             public void handle(HttpServerRequest request) {
+                String id = request.params().get("id");
                 System.out.println(
-                        "A request has arrived on the server!, thread " + Thread.currentThread()
+                        "A request has arrived on the server!, id : " + id + " thread " + Thread
+                                .currentThread()
                                                                                 .getId());
                 doSleep();
                 request.response().end();
