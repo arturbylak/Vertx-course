@@ -21,10 +21,4 @@ public class Sender extends Verticle {
         System.out.println("Sender > After send, thread: " + Thread.currentThread()
                 .getId());
     }
-
-    private void print(Message<String> response) {
-        System.out.println("Sender > " + response.body() + " thread: " + Thread
-                .currentThread()
-                .getId());
-    }
 }
