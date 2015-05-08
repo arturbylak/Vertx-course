@@ -11,7 +11,7 @@ public class Starter extends Verticle {
     public void start(final Future<Void> startedResult) {
         // For example - deploy some other verticle
         System.out.println("Starter  thread : "  + Thread.currentThread().getId());
-        deployVerticle("Receiver.java", 1, (Void) -> deployVerticle("Sender.java", 1, null));
+        deployVerticle("Receiver.java", 3, (Void) -> deployVerticle("Sender.java", 1, null));
     }
 
     private void deployVerticle(final String path, final int instances, final Consumer<Void>

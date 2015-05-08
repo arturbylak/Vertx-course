@@ -14,12 +14,9 @@ public class Sender extends Verticle {
         System.out.println("Sender > Before send, thread : " + Thread.currentThread()
                                                                             .getId());
 
-        eventBus.send("test.address", "Message published", (Message<String> response) ->
-                print(response));
-        eventBus.send("test.address", "Message published 2", (Message<String> response) ->
-                print(response));
-        eventBus.send("test.address", "Message published 3", (Message<String> response) ->
-                print(response));
+        eventBus.publish("test.address", "Message published");
+        eventBus.publish("test.address", "Message published 2");
+        eventBus.publish("test.address", "Message published 3");
 
         System.out.println("Sender > After send, thread: " + Thread.currentThread()
                 .getId());
