@@ -11,15 +11,23 @@ public class Sender extends Verticle {
         final Vertx vertx = getVertx();
         final EventBus eventBus = vertx.eventBus();
 
-        System.out.println("Sender > Before send");
+        System.out.println("Sender > Before send, thread : " + Thread.currentThread()
+                                                                            .getId());
 
         eventBus.send("test.address", "Message published", (Message<String> response) ->
-                System.out.println("Sender > " + response.body()));
+                print(response));
         eventBus.send("test.address", "Message published 2", (Message<String> response) ->
-                System.out.println("Sender > " + response.body()));
+                print(response));
         eventBus.send("test.address", "Message published 3", (Message<String> response) ->
-                System.out.println("Sender > " + response.body()));
+                print(response));
 
-        System.out.println("Sender > After send");
+        System.out.println("Sender > After send, thread: " + Thread.currentThread()
+                .getId());
+    }
+
+    private void print(Message<String> response) {
+        System.out.println("Sender > " + response.body() + " thread: " + Thread
+                .currentThread()
+                .getId());
     }
 }

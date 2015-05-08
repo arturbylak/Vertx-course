@@ -15,14 +15,15 @@ public class Receiver extends Verticle {
     }
 
     private void handle(final Message<String> message) {
-        System.out.println("Receiver > " +message.body());
+        System.out.println("Receiver > " + message.body() + ", thread : "  + Thread
+                .currentThread().getId());
         doSleep();
-        message.reply("This is a reply");
+        message.reply("This is a reply from Receiver");
     }
 
     private void doSleep() {
         try {
-            Thread.sleep(3000);
+            Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
