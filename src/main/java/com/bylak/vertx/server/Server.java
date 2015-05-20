@@ -24,7 +24,8 @@ public class Server extends Verticle {
                                 .currentThread()
                                                                                 .getId());
                 doSleep();
-                request.response().end();
+                request.response().end("Response from thread " + Thread
+                        .currentThread().getId());
             }
         });
 
