@@ -1,7 +1,9 @@
 package com.bylak.vertx.server;
 
+import java.util.Map;
 import org.vertx.java.core.Future;
 import org.vertx.java.core.Handler;
+import org.vertx.java.core.VoidHandler;
 import org.vertx.java.core.http.HttpServer;
 import org.vertx.java.core.http.HttpServerRequest;
 import org.vertx.java.core.http.RouteMatcher;
@@ -13,30 +15,30 @@ import org.vertx.java.platform.Verticle;
 public class Server extends Verticle {
     @Override
     public void start(final Future<Void> startedResult) {
-        HttpServer server = vertx.createHttpServer();
-        RouteMatcher routeMatcher = new RouteMatcher();
-
-        routeMatcher.get("/page/:id", new Handler<HttpServerRequest>() {
-            public void handle(HttpServerRequest request) {
-                String id = request.params().get("id");
-                System.out.println(
-                        "A request has arrived on the server!, id : " + id + " thread " + Thread
-                                .currentThread()
-                                                                                .getId());
-                doSleep();
-                request.response().end("Response from thread " + Thread
-                        .currentThread().getId());
+        vertx.createHttpServer().requestHandler(new Handler<HttpServerRequest>() {
+            public void handle(final HttpServerRequest req) {
+                if (req.uri().equals("/")) {
+                    // Serve the index page
+                    req.response().sendFile("index.html");
+                } else if (req.uri().startsWith("/form")) {
+                    req.response().setChunked(true);
+                    req.expectMultiPart(true);
+                    req.endHandler(new VoidHandler() {
+                        protected void handle() {
+                            for (Map.Entry<String, String> entry : req.formAttributes()) {
+                                req.response()
+                                   .write("Got attr " + entry.getKey() + " : " + entry.getValue()
+                                           + "\n");
+                            }
+                            req.response().end();
+                        }
+                    });
+                } else {
+                    req.response().setStatusCode(404);
+                    req.response().end();
+                }
             }
-        });
-
-        server.requestHandler(routeMatcher).listen(8080, "localhost");
+        }).listen(8080);
     }
 
-    private void doSleep() {
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 }
